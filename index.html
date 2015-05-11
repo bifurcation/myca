@@ -3,6 +3,10 @@
 
 <head>
 <title>MyCA - HTTPS for You</title>
+<script src="./jquery-2.1.4.min.js"></script>
+<script src="./forge.min.js"></script>
+<script src="./FileSaver.min.js"></script>
+<script src="./index.js"></script>
 </head>
 
 <body>
@@ -10,7 +14,9 @@
 <h1>MyCA &mdash; DIY HTTPS Certificates</h1>
 
 <p>
-- intro 
+- intro
+- https good
+- CAs less good
 - make a root, then make server certificates
 - set up SSL with the config generator
 </p>
@@ -18,11 +24,29 @@
 
 <h2>Act I: Make a root certificate</h2>
 
+<!--
+XXX: Unconstrained roots are bad
+
+It doesn't thrill me that this design pattern encourages the creation
+of omnipotent roots, at a time when we want the CAs to be constrained.
+It would be better if we could create roots that have name constraints
+that restrict them to the issued certificates, or to some zone.  But
+JS crypto support for name constraints isn't really there right now,
+so I'm omitting it for now in the name of a minimum viable product.
+-->
+
 <ol>
 <li>Name it: <input type="text" id="rootName"/></li>
-<li><button id="makeRoot">Make it</button><span id="generating">(working, please wait)</li>
-<li>Download the <a href="#">key</a> and <a href="#">certificate</a></li>
+<li><button id="makeRoot">Make it</button><span id="makeRootStatus"></span></li>
+<li>Download the <span id="downloadRootKey">key</span> and <span id="downloadRootCert">certificate</span></li>
 </ol>
+
+<h3>Quick check</h3>
+
+<pre>
+> openssl x509 -in root.cert.pem -text
+> openssl verify -CAfile root.cert.pem root.cert.pem
+</pre>
 
 
 <h2>Act II: Make server certificate(s)</h2>
@@ -34,14 +58,16 @@
 <ol>
 <li>Load your root:
   <ul>
-  <li>Key: <input type="file" id="rootKey"></li>
-  <li>Certificate: <input type="file" id="rootCert"></li>
+  <li>Select key file: <input type="file" id="rootKey"></li>
+  <li>Select certificate file: <input type="file" id="rootCert"></li>
+  <li><button id="loadRoot">Load</button><span id="loadRootStatus"></span></li>
   </ul>
 </li>
 <li>Choose names (whitespace-separated):<br/>
-    <textarea rows="5" cols="50"></textarea>
+    <textarea id="serverNames" rows="5" cols="50"></textarea><br/>
+    <span id="serverNamesStatus"></span>
 </li>
-<li><button id="makeRoot">Make it</button><span id="generating">(working, please wait)</li>
+<li><button id="makeServer">Make it</button><span id="makeServerStatus"></span></li>
 <li>Download the <a href="#">key</a> and <a href="#">certificate</a></li>
 </ol>
 
