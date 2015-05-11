@@ -109,7 +109,7 @@ function makeRoot() {
 
   try {
     updateStatus(tag, "(signing certificate)", CLASS_PROGRESS);
-    gRootCert.sign(gRootKeyPair.privateKey);
+    gRootCert.sign(gRootKeyPair.privateKey, forge.md.sha256.create());
   } catch (err) {
     updateStatus(tag, "(error signing certificate)", CLASS_ERROR);
     console.log("Error signing certificate" + err);
@@ -243,7 +243,7 @@ function makeServer() {
 
   try {
     updateStatus(tag, "(signing certificate)", CLASS_PROGRESS);
-    gServerCert.sign(gRootKeyPair.privateKey);
+    gServerCert.sign(gRootKeyPair.privateKey, forge.md.sha256.create());
   } catch (err) {
     updateStatus(tag, "(error signing certificate)", CLASS_ERROR);
     console.log("Error signing certificate" + err);
