@@ -10,6 +10,7 @@ var FILE_ROOT_CERT = "root.cert.pem";
 var FILE_SERVER_KEY = "server.key.pem";
 var FILE_SERVER_CERT = "server.cert.pem";
 
+// These should line up with CSS classes
 var CLASS_PROGRESS = "statusProgress";
 var CLASS_DONE = "statusDone";
 var CLASS_ERROR = "statusError";

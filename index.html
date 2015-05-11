@@ -7,9 +7,11 @@
 <script src="./forge.min.js"></script>
 <script src="./FileSaver.min.js"></script>
 <script src="./index.js"></script>
+<link rel="stylesheet" href="./index.css"/>
 </head>
 
 <body>
+<div id="main">
 
 <h1>MyCA &mdash; DIY HTTPS Certificates</h1>
 
@@ -38,14 +40,14 @@ so I'm omitting it for now in the name of a minimum viable product.
 <ol>
 <li>Name this root: <input type="text" id="rootName"/></li>
 <li><button id="makeRoot">Sign the root certificate</button><span id="makeRootStatus"></span></li>
-<li>Download the <span id="downloadRootKey">key</span> and <span id="downloadRootCert">certificate</span></li>
+<li>Download the <span id="downloadRootKey" class="clickable">key</span> and <span id="downloadRootCert" class="clickable">certificate</span></li>
 </ol>
 
 <h3>Quick check</h3>
 
 <pre>
-> openssl x509 -in root.cert.pem -text
-> openssl verify -CAfile root.cert.pem root.cert.pem
+openssl x509 -in root.cert.pem -text
+openssl verify -CAfile root.cert.pem root.cert.pem
 </pre>
 
 
@@ -67,14 +69,14 @@ so I'm omitting it for now in the name of a minimum viable product.
     <span id="serverNamesStatus"></span>
 </li>
 <li><button id="makeServer">Sign the server certificate</button><span id="makeServerStatus"></span></li>
-<li>Download the <span id="downloadServerKey">key</span> and <span id="downloadServerCert">certificate</span></li>
+<li>Download the <span id="downloadServerKey" class="clickable">key</span> and <span id="downloadServerCert" class="clickable">certificate</span></li>
 </ol>
 
 <h3>Quick check</h3>
 
 <pre>
-> openssl x509 -in server.cert.pem -text
-> openssl verify -CAfile root.cert.pem server.cert.pem
+openssl x509 -in server.cert.pem -text
+openssl verify -CAfile root.cert.pem server.cert.pem
 </pre>
 
 
@@ -93,8 +95,11 @@ so I'm omitting it for now in the name of a minimum viable product.
 <h3>Quick check</h3>
 
 <pre>
-&gt; openssl s_server -accept 8080 -www -key server.key.pem -cert server.cert.pem
-&gt; openssl s_client -connect localhost:8080 -CAfile root.cert.pem 2&gt;/dev/null &lt;/dev/null | grep "Verify return code"
+openssl s_server -accept 8080 -www \
+                 -key server.key.pem -cert server.cert.pem
+openssl s_client -connect localhost:8080 -CAfile root.cert.pem \
+                 2&gt;/dev/null &lt;/dev/null \
+                 | grep "Verify return code"
 </pre>
 
 
@@ -104,7 +109,7 @@ so I'm omitting it for now in the name of a minimum viable product.
 
 <p>[[ It really is better to have a real certificate.  It saves the work of having to reconfigure every browser you want to connect (or click through warnings). CertBuddy, StartSSL, WoSign, etc. ]]</p>
 
-
+</div>
 </body>
 
 </html>

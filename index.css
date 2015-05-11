@@ -1,0 +1,53 @@
+/* Colors from: http://designmodo.github.io/Flat-UI/ */
+
+body {
+  font-family: "Open Sans", "Helvetica", sans-serif;
+  font-size: 11pt;
+  background-color: #3498db;
+}
+
+#main {
+  padding: .5em 2em;
+  max-width: 600px;
+  margin: 0 auto;
+  background: #ffffff;
+}
+
+h2 {
+  border-top: 1px solid black;
+  padding-top: 1ex;
+}
+
+li {
+  padding: .3ex;
+}
+
+pre {
+  background: #ecf0f1;
+  padding: 1ex;
+}
+
+span.clickable {
+  font-weight: bold;
+  color: #3498db;
+  cursor: pointer;
+}
+
+span.statusProgress {
+  font-size: 80%;
+  font-weight: bold;
+  color: #f1c40f;
+}
+
+span.statusError {
+  font-size: 80%;
+  font-weight: bold;
+  color: #c0392b;
+}
+
+span.statusDone {
+  font-size: 80%;
+  font-weight: bold;
+  color: #27ae60;
+}
+
