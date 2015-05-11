@@ -1,0 +1,73 @@
+<!DOCTYPE html5>
+<html>
+
+<head>
+<title>MyCA - HTTPS for You</title>
+</head>
+
+<body>
+
+<h1>MyCA &mdash; DIY HTTPS Certificates</h1>
+
+<p>
+- intro 
+- make a root, then make server certificates
+- set up SSL with the config generator
+</p>
+
+
+<h2>Act I: Make a root certificate</h2>
+
+<ol>
+<li>Name it: <input type="text" id="rootName"/></li>
+<li><button id="makeRoot">Make it</button><span id="generating">(working, please wait)</li>
+<li>Download the <a href="#">key</a> and <a href="#">certificate</a></li>
+</ol>
+
+
+<h2>Act II: Make server certificate(s)</h2>
+
+<p>
+- you need to have a root certificate before you do this step
+</p>
+
+<ol>
+<li>Load your root:
+  <ul>
+  <li>Key: <input type="file" id="rootKey"></li>
+  <li>Certificate: <input type="file" id="rootCert"></li>
+  </ul>
+</li>
+<li>Choose names (whitespace-separated):<br/>
+    <textarea rows="5" cols="50"></textarea>
+</li>
+<li><button id="makeRoot">Make it</button><span id="generating">(working, please wait)</li>
+<li>Download the <a href="#">key</a> and <a href="#">certificate</a></li>
+</ol>
+
+
+<h2>Act III: Install the certificates</h2>
+
+<p>You should have the following things now: a root key, a root certificate, a server key and a server certificate.  Each of these needs to be used a little differently.
+</p>
+
+<ul>
+<li><b>Root key (root.key.pem):</b> This one is easy.  Just save this somewhere in case you want to make more server certificates later.</li>
+<li><b>Root certificate (root.cert.pem):</b> This certificate will need to be installed as a trusted authority in every browser that you want to be able to connect to your sites.  How to do that will depend on the browser (<a href="TODO">IE</a> <a href="TODO">Cr</a> <a href="TODO">Fx</a> <a href="TODO">Sa</a>)</li>
+<li><b>Server key (server.key.pem) and server certificate (server.key.pem):</b> How you install the server key certificate is going to depend on your server setup, or your hosting provider if you're not running your own server.  If you're running your own server, the <a href="TODO">Mozilla config generator</a> can help you get set up.  If you're in a hosted environment, please see your hosting provider's documentation.</li>
+</ul>
+
+
+<!-- TODO: Quick openssl test -->
+
+
+<h2>Caveats!</h2>
+
+<p>Through the magic of JavaScript, this is all done on your computer.  MyCA never sees your private information, and will not be able to impersonate your servers.</p>
+
+<p>[[ It really is better to have a real certificate.  It saves the work of having to reconfigure every browser you want to connect (or click through warnings). CertBuddy, StartSSL, WoSign, etc. ]]</p>
+
+
+</body>
+
+</html>
