@@ -93,8 +93,8 @@ so I'm omitting it for now in the name of a minimum viable product.
 <h3>Quick check</h3>
 
 <pre>
-> openssl s_server -accept 8080 -www -key server.key.pem -cert server.cert.pem
-> openssl s_client -connect localhost:8080 -CAfile root.cert.pem 2>/dev/null </dev/null | grep "Verify return code"
+&gt; openssl s_server -accept 8080 -www -key server.key.pem -cert server.cert.pem
+&gt; openssl s_client -connect localhost:8080 -CAfile root.cert.pem 2&gt;/dev/null &lt;/dev/null | grep "Verify return code"
 </pre>
 
 
