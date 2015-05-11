@@ -16,12 +16,29 @@
 <h1>MyCA &mdash; DIY HTTPS Certificates</h1>
 
 <p>
-- intro
-- https good
-- CAs less good
-- make a root, then make server certificates
-- set up SSL with the config generator
+HTTPS is <a href="https://blog.mozilla.org/security/2015/04/30/deprecating-non-secure-http/">good for the web</a>, but it means you need a <a href="https://en.wikipedia.org/wiki/X.509#Certificates">certificate</a>.  You can get one from a commercial CA, but maybe that's too hard for your small project.  So let's make our own certificates!
 </p>
+
+<p>
+This page provides a simple set of tools to make certificates for web servers.  You can make your own trusted root certificate, then use it to issue certificates for servers.  Then all you need to do is configure your browser and servers with those certificates, and you're part of the secure web.
+</p>
+
+<ul>
+<li><a href="#">FAQ</a></li>
+<li><a href="#">I need to make a root certificate</a></li>
+<li><a href="#">I have a root and I want to issue a server certificate</a></li>
+<li><a href="#">What do I do with these certificates?</a></li>
+</ul>
+
+<h2>FAQ</h2>
+
+<p><i>Q. Who should use this?</i></p>
+
+<p>A. The certificates you can make here require the user to agree to use them before they're considered secure.  So they are best for sites with a small number of users, rather than a site that you intend to be visibile to the whole world.  If you're experimenting with a new idea with a few friends, MyCA certificates should work fine.  If you want to set up something bigger, you should probably get a certificate from a CA that the browsers will trust without requiring the user's consent.  (There are <a href="https://www.startssl.com/">several</a> <a href="https://buy.wosign.com/free/">free</a> <a href="https://www.letsencrypt.org/">options</a>, and <a href="https://sslmate.com/">even</a> <a href="https://www.sslshopper.com/certificate-authority-reviews.html">more</a> for a fee.)</p>
+
+<p><i>Q. Am I exposing my private keys by using this site to make my certificates?</i></p>
+
+<p>A. Through the magic of JavaScript, everything MyCA does is done on your computer, in your browser.  MyCA never sees your private information, and will not be able to impersonate your CA or your servers.  Plus, this whole thing is <a href="https://github.com/bifurcation/myca">open source</a>, so you can check that we're not lying.</p>
 
 
 <h2>Act I: Make a root certificate</h2>
@@ -87,8 +104,15 @@ openssl verify -CAfile root.cert.pem server.cert.pem
 
 <ul>
 <li><b>Root key (root.key.pem):</b> This one is easy.  Just save this somewhere in case you want to make more server certificates later.</li>
-<li><b>Root certificate (root.cert.pem):</b> This certificate will need to be installed as a trusted authority in every browser that you want to be able to connect to your sites.  How to do that will depend on the browser (<a href="TODO">IE</a> <a href="TODO">Cr</a> <a href="TODO">Fx</a> <a href="TODO">Sa</a>)</li>
-<li><b>Server key (server.key.pem) and server certificate (server.key.pem):</b> How you install the server key certificate is going to depend on your server setup, or your hosting provider if you're not running your own server.  If you're running your own server, the <a href="TODO">Mozilla config generator</a> can help you get set up.  If you're in a hosted environment, please see your hosting provider's documentation.</li>
+<li><b>Root certificate (root.cert.pem):</b> This certificate will need to be installed as a trusted authority in every browser that you want to be able to connect to your sites.  How to do that will depend on the browser: 
+  <ul>
+  <li>Internet Explorer: Follow the <a href="https://technet.microsoft.com/en-us/library/cc754841.aspx#BKMK_addlocal">instructions from Microsoft</a></li> 
+  <li>Safari: Follow the <a href="https://support.apple.com/kb/PH10968">instructions from Apple</a></li> 
+  <li>Firefox: Import the certificate using Settings / Advanced / Certificates / View Certificates / Import...</li>
+  <li>Chrome: On Windows and MacOS, follow the instructions for IE or Safari above.  On Linux, you'll need to follow <a href="https://code.google.com/p/chromium/wiki/LinuxCertManagement">Google's instructions</a></li>
+  </ul>
+</li>
+<li><b>Server key (server.key.pem) and server certificate (server.key.pem):</b> How you install the server key certificate is going to depend on your server setup, or your hosting provider if you're not running your own server.  If you're running your own server, the <a href="https://mozilla.github.io/server-side-tls/ssl-config-generator/">Mozilla config generator</a> can help you get set up.  If you're in a hosted environment, please see your hosting provider's documentation.</li>
 </ul>
 
 
@@ -103,11 +127,10 @@ openssl s_client -connect localhost:8080 -CAfile root.cert.pem \
 </pre>
 
 
-<h2>Caveats!</h2>
+<h2>Credits</h2>
 
-<p>Through the magic of JavaScript, this is all done on your computer.  MyCA never sees your private information, and will not be able to impersonate your servers.</p>
+This website is an <a href="https://github.com/bifurcation/myca">open source</a> project, and <a href="https://github.com/bifurcation/myca/issues">your help</a> would be greatly appreciated.
 
-<p>[[ It really is better to have a real certificate.  It saves the work of having to reconfigure every browser you want to connect (or click through warnings). CertBuddy, StartSSL, WoSign, etc. ]]</p>
 
 </div>
 </body>

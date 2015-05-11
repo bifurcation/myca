@@ -18,6 +18,11 @@ h2 {
   padding-top: 1ex;
 }
 
+a {
+  font-weight: bold;
+  color: #3498db;
+}
+
 li {
   padding: .3ex;
 }
