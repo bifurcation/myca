@@ -79,7 +79,7 @@ function makeRoot() {
     name: "commonName",
     value: enteredName 
   }];
-  
+
   // Generate a key pair
   updateStatus(tag, "(generating key)", CLASS_PROGRESS);
   gRootKeyPair = forge.pki.rsa.generateKeyPair(KEY_SIZE);
@@ -105,7 +105,7 @@ function makeRoot() {
   }, {
     name: "subjectKeyIdentifier"
   }]);
-  
+
   try {
     updateStatus(tag, "(signing certificate)", CLASS_PROGRESS);
     gRootCert.sign(gRootKeyPair.privateKey);
@@ -161,10 +161,10 @@ function loadRootCert(keyPEM) {
 function checkServerNames() {
   var tag = "serverNames";
   const hostname = /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/;
-  
+
   // Should be whitespace-separated DNS names
   var serverNames = $("#serverNames").val().split(/\s+/);
-  
+
   if (serverNames.length == 0) {
     console.log("Need a name");
     updateStatus(tag, "(need a name)", CLASS_PENDING);
@@ -239,7 +239,7 @@ function makeServer() {
   }, {
     name: 'subjectKeyIdentifier'
   }]);
-    
+
   try {
     updateStatus(tag, "(signing certificate)", CLASS_PROGRESS);
     gServerCert.sign(gRootKeyPair.privateKey);
@@ -248,7 +248,7 @@ function makeServer() {
     console.log("Error signing certificate" + err);
     return;
   }
-  
+
   // Prepare the key and certificate for download
   gServerKeyPEM = forge.pki.privateKeyToPem(gServerKeyPair.privateKey);
   gServerCertPEM = forge.pki.certificateToPem(gServerCert);
