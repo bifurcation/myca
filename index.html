@@ -43,17 +43,6 @@ This page provides a simple set of tools to make certificates for web servers.  
 
 <h2>Act I: Make a root certificate</h2>
 
-<!--
-XXX: Unconstrained roots are bad
-
-It doesn't thrill me that this design pattern encourages the creation
-of omnipotent roots, at a time when we want the CAs to be constrained.
-It would be better if we could create roots that have name constraints
-that restrict them to the issued certificates, or to some zone.  But
-JS crypto support for name constraints isn't really there right now,
-so I'm omitting it for now in the name of a minimum viable product.
--->
-
 <ol>
 <li>Name this root: <input type="text" id="rootName"/></li>
 <li><button id="makeRoot">Sign the root certificate</button><span id="makeRootStatus"></span></li>
