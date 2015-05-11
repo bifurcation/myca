@@ -67,8 +67,15 @@ so I'm omitting it for now in the name of a minimum viable product.
     <span id="serverNamesStatus"></span>
 </li>
 <li><button id="makeServer">Sign the server certificate</button><span id="makeServerStatus"></span></li>
-<li>Download the <a href="#">key</a> and <a href="#">certificate</a></li>
+<li>Download the <span id="downloadServerKey">key</span> and <span id="downloadServerCert">certificate</span></li>
 </ol>
+
+<h3>Quick check</h3>
+
+<pre>
+> openssl x509 -in server.cert.pem -text
+> openssl verify -CAfile root.cert.pem server.cert.pem
+</pre>
 
 
 <h2>Act III: Install the certificates</h2>
@@ -83,7 +90,12 @@ so I'm omitting it for now in the name of a minimum viable product.
 </ul>
 
 
-<!-- TODO: Quick openssl test -->
+<h3>Quick check</h3>
+
+<pre>
+> openssl s_server -accept 8080 -www -key server.key.pem -cert server.cert.pem
+> openssl s_client -connect localhost:8080 -CAfile root.cert.pem 2>/dev/null </dev/null | grep "Verify return code"
+</pre>
 
 
 <h2>Caveats!</h2>
