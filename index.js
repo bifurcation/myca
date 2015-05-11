@@ -38,6 +38,23 @@ function saveFile(filename, text) {
   saveAs(blob, filename);
 }
 
+function fileLoader(callback) {
+  return function(evt) {
+    evt = evt.originalEvent || evt;
+    window.myEvent = evt;
+    var files = evt.target.files;
+    for (var i=0; i < files.length; ++i) {
+      (function(i) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          callback(e.target.result);
+        }
+        reader.readAsText(files[i]);
+      })(i);
+    }
+  }
+}
+
 
 /*** Root generation ***/
 
@@ -103,7 +120,60 @@ function downloadRootCert() { saveFile(FILE_ROOT_CERT, gRootCertPEM); }
 
 /*** Server certificate generation ***/
 
-// TODO
+function loadRootKey(keyPEM) {
+  var tag = "rootKey";
+
+  try { 
+    gRootKeyPair = {
+      privateKey: forge.pki.privateKeyFromPem(keyPEM)
+    };
+  } catch (e) {
+    console.log("Error parsing certificate: " + e);
+    updateStatus(tag, "(error)", CLASS_ERROR);
+    return;
+  }
+
+  updateStatus(tag, "(ok)", CLASS_DONE);
+}
+
+function loadRootCert(keyPEM) {
+  var tag = "rootCert";
+
+  try { 
+    gRootCert = forge.pki.certificateFromPem(keyPEM);
+  } catch (e) {
+    console.log("Error parsing certificate: " + e);
+    updateStatus(tag, "(error)", CLASS_ERROR);
+    return;
+  }
+
+  updateStatus(tag, "(ok)", CLASS_DONE);
+}
+
+function checkServerNames() {
+  var tag = "serverNames";
+  const hostname = /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/;
+  
+  // Should be whitespace-separated DNS names
+  var serverNames = $(this).val().split(/\s+/);
+  
+  if (serverNames.length == 0) {
+    console.log("Need a name");
+    updateStatus(tag, "(need a name)", CLASS_PENDING);
+    return
+  }
+
+  for (var i=0; i < serverNames.length; ++i) {
+    if (!serverNames[i].match(hostname)) {
+      console.log("Invalid name: " + serverNames[i]);
+      updateStatus(tag, "(invalid)", CLASS_ERROR);
+      return;
+    }
+  }
+
+  console.log("ok");
+  updateStatus(tag, "(ok)", CLASS_DONE);
+}
 
 
 /*** Ready handler ***/
@@ -112,4 +182,8 @@ $(document).ready(function() {
   $("#makeRoot").click(makeRoot);
   $("#downloadRootKey").click(downloadRootKey);
   $("#downloadRootCert").click(downloadRootCert);
+
+  $("#rootKey").change(fileLoader(loadRootKey));
+  $("#rootCert").change(fileLoader(loadRootCert));
+  $("#serverNames").keyup(checkServerNames);
 });
