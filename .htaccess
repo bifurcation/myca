@@ -1,4 +1,6 @@
-# Adapted from: http://wiki.apache.org/httpd/RewriteHTTPToHTTPS
+# Adapted from:
+# http://wiki.apache.org/httpd/RewriteHTTPToHTTPS
+# https://raymii.org/s/tutorials/HTTP_Strict_Transport_Security_for_Apache_NGINX_and_Lighttpd.html
 
 RewriteEngine On
 
@@ -10,3 +12,6 @@ RewriteCond %{HTTPS} !=on
 # i.e. http://www.example.com/foo/ 
 #   -> https://www.example.com/foo/
 RewriteRule ^/?(.*) https://%{SERVER_NAME}/$1 [R,L]
+
+# Send an HSTS header to ask browsers to do the redirect for us (90-day lifetime)
+Header always set Strict-Transport-Security "max-age=7776000; includeSubdomains; preload"
